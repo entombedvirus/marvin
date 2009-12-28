@@ -1,10 +1,14 @@
 Bluepill.application(:marvin) do |app|
-  app.working_dir = "/var/www/apps/marvin"
+  ROOT = "/var/www/apps/marvin"
+  
+  app.working_dir = ROOT
   app.uid = app.gid = "rohith"
   
   app.process(:bot) do |p|
     p.daemonize = true
     p.start_command = "rake marvin:start MARVIN_ENV=production"
+    
+    p.stdout = p.stderr = "#{ROOT}/log/marvin.log"
     
     p.checks :mem_usage, :every => 10.seconds, :below => 100.megabytes, :times => [9, 10]
     p.checks :flapping, :times => 5, :within => 1.minute, :retry_in => 10.minutes
