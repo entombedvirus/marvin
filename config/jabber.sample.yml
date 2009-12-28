@@ -1,0 +1,9 @@
+development:
+  server: talk.google.com
+  username:
+  passwd: 
+
+production:
+  server: talk.google.com
+  username:
+  passwd: 
