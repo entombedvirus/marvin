@@ -4,8 +4,12 @@ module Marvin
   class JabberBot
     def initialize(config)
       @config = config.dup
-      @jabber = Jabber::Simple.new(*config.values_at("username", "passwd"))
+      
+      username, passwd = config.values_at("username", "passwd")
+      @jabber = Jabber::Simple.new(username, passwd, nil, "Marvin is active! =)")
+      
       at_exit{@jabber.status(:away, "marvin is feeling down")}
+      
       @mutex = Mutex.new
     end
 
