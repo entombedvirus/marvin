@@ -1,5 +1,6 @@
 Bluepill.application(:marvin) do |app|
   app.working_dir = "/var/www/apps/marvin"
+  app.uid = app.gid = "rohith"
   
   app.process(:bot) do |p|
     p.daemonize = true
