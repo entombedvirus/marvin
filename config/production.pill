@@ -1,0 +1,8 @@
+Bluepill.application(:marvin) do |app|
+  app.working_dir = "/var/www/apps/marvin"
+  
+  app.process(:bot) do |p|
+    p.daemonize = true
+    p.start_command = "rake marvin:start MARVIN_ENV=production"
+  end
+end
