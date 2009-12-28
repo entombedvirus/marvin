@@ -38,25 +38,9 @@ module Marvin
       # Thread.new { c.process! }
       case message.body
       when "!deploy"
-        deploy_handler = Module.new do
-          def initialize(bot, target_contact)
-            @bot = bot
-            @target_contact = target_contact
-          end
-          
-          # Let bluepill restart marvin
-          def unbind
-            @bot.jabber.deliver(@target_contact, @data)
-            EM.stop_event_loop
-          end
-          
-          def receive_data(data)
-            @data ||= ""
-            @data << data
-          end
-        end
-        
-        EM.popen("git pull", deploy_handler, self, message.from)
+        update_code!(message)
+      else
+        @jabber.deliver(message.from, "Dunno wachu talkin abt.")
       end
     end
     
@@ -64,6 +48,28 @@ module Marvin
       @mutex.synchronize do
         @jabber.deliver(@config["target_contact"], msg)
       end
+    end
+    
+    def update_code!(message)
+      deploy_handler = Module.new do
+        def initialize(bot, target_contact)
+          @bot = bot
+          @target_contact = target_contact
+        end
+        
+        # Let bluepill restart marvin
+        def unbind
+          @bot.jabber.deliver(@target_contact, @data)
+          EM.stop_event_loop
+        end
+        
+        def receive_data(data)
+          @data ||= ""
+          @data << data
+        end
+      end
+      
+      EM.popen("git pull", deploy_handler, self, message.from)
     end
   end
 end
