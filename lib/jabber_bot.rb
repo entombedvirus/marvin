@@ -11,8 +11,16 @@ module Marvin
       at_exit{@jabber.status(:away, "marvin is feeling down")}
       
       @mutex = Mutex.new
+      
+      start_throwing_away_incoming_messages
     end
 
+    def start_throwing_away_incoming_messages
+      EM::PeriodicTimer.new(1) do
+        @jabber.received_messages {|m| }
+      end
+    end
+    
     # def start
     #   # EM::PeriodicTimer.new(1) do
     #   #   @jabber.received_messages do |message|
