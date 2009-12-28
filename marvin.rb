@@ -10,7 +10,7 @@ module Marvin
   
   def start(options)
     EM.run do      
-      marvin = Marvin::JabberBot.new(*options.values_at(:jabber_server, :username, :passwd))
+      marvin = Marvin::JabberBot.new(options)
       
       # Start the web listener
       EM.start_server("0.0.0.0", 9090, WebHandler, marvin)

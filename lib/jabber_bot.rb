@@ -2,8 +2,9 @@ require 'thread'
 
 module Marvin
   class JabberBot
-    def initialize(server, username, passwd)
-      @jabber = Jabber::Simple.new(username, passwd)
+    def initialize(config)
+      @config = config.dup
+      @jabber = Jabber::Simple.new(*config.values_at("username", "passwd"))
       at_exit{@jabber.status(:away, "marvin is feeling down")}
       @mutex = Mutex.new
     end
@@ -33,7 +34,7 @@ module Marvin
     
     def send_message(msg)
       @mutex.synchronize do
-        @jabber.deliver("entombedvirus@gmail.com", msg)
+        @jabber.deliver(@config["target_contact"], msg)
       end
     end
   end

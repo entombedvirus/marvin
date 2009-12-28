@@ -2,8 +2,10 @@ development:
   server: talk.google.com
   username:
   passwd: 
-
+  target_contact:
+    
 production:
   server: talk.google.com
   username:
   passwd: 
+  target_contact:
