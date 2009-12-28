@@ -39,8 +39,6 @@ module Marvin
       case message.body
       when "!deploy"
         update_code!(message)
-      else
-        @jabber.deliver(message.from, "Dunno wachu talkin abt.")
       end
     end
     
