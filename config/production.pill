@@ -5,5 +5,8 @@ Bluepill.application(:marvin) do |app|
   app.process(:bot) do |p|
     p.daemonize = true
     p.start_command = "rake marvin:start MARVIN_ENV=production"
+    
+    p.checks :mem_usage, :every => 10.seconds, :below => 100.megabytes, :times => [9, 10]
+    p.checks :flapping, :times => 5, :within => 1.minute, :retry_in => 10.minutes
   end
 end
